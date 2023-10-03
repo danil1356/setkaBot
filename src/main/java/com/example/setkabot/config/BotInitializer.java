@@ -12,6 +12,9 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 @Component
 public class BotInitializer {
 
+    /**
+     * можно в основном классе приложения но, не надо
+     * */
     @Autowired
     TelegramBot telegramBot;
 
