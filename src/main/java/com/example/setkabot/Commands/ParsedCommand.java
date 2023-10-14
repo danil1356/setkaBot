@@ -1,4 +1,4 @@
-package com.example.setkabot.service.command;
+package com.example.setkabot.Commands;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,6 +10,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ParsedCommand {
-    Command command = Command.NONE;
+    Commands command = Commands.NONE;
     String text="";
 }

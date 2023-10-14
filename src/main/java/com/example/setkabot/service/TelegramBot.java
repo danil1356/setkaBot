@@ -26,7 +26,6 @@ import java.util.List;
 
 @Component
 public class TelegramBot extends TelegramLongPollingBot {
-
     BotConfig botConfig;
 
     @SneakyThrows
@@ -52,11 +51,19 @@ public class TelegramBot extends TelegramLongPollingBot {
     @SneakyThrows
     @Override
     public void onUpdateReceived(Update update) {
+//        //сообщения
+//        if (update.hasMessage() && update.getMessage().hasText()){
+//            MessageExecuter messageExecuter = new MessageExecuter(update);
+//            messageExecuter.Execute();
+//        }
+//        //команды
+//        else if (update.hasCallbackQuery()){
+//            CallbackExecuter callbackExecuter = new CallbackExecuter(update);
+//        }
         //команды
         if (update.hasMessage() && update.getMessage().hasText()){
             String messageText = update.getMessage().getText();
             long chatId = update.getMessage().getChatId();
-
             switch (messageText){
                 case "/start":
                     InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
@@ -64,8 +71,6 @@ public class TelegramBot extends TelegramLongPollingBot {
                     List<InlineKeyboardButton> rowLine = new ArrayList<>();
                     List<InlineKeyboardButton> rowLine1 = new ArrayList<>();
 
-                    //rowLine.add(createButton("sites","Лучшие сайты для град анализа"));
-                    //rowLine1.add(createButton("themes","Предложить тему"));
                     rowLine1.add(createButton("bookClub","Вступить в книжный клуб"));
 
                     rowsLine.add(rowLine);
@@ -89,31 +94,11 @@ public class TelegramBot extends TelegramLongPollingBot {
             }
 
         }
-
         //кнопки
         else if (update.hasCallbackQuery()){
             String callbackData = update.getCallbackQuery().getData();
             long messageId = update.getCallbackQuery().getMessage().getMessageId();
             long chatId = update.getCallbackQuery().getMessage().getChatId();
-
-            // TODO: 21.09.2023 s
-//            if (callbackData.equals("sites")){
-//                SendDocument sendDocument = new SendDocument();
-//                sendDocument.setChatId(chatId);
-//                sendDocument.setCaption("Лови! Никогда ещё предпроектная часть не делалась так легко и приятно ✴");
-//                sendDocument.setDocument(new InputFile("https://d5dtr08tpm9a60d6dnpc.apigw.yandexcloud.net/sobaka"));
-//
-//                execute(sendDocument);
-//            }
-
-            // TODO: 21.09.2023 t
-//            if (callbackData.equals("themes")){
-//                SendDocument sendDocument = new SendDocument();
-//                sendDocument.setChatId(chatId);
-//                sendDocument.setDocument(new InputFile("https://d5dtr08tpm9a60d6dnpc.apigw.yandexcloud.net/sobaka"));
-//
-//                execute(sendDocument);
-//            }
 
             if (callbackData.equals("bookClub")){
                 InlineKeyboardMarkup markup = new InlineKeyboardMarkup();

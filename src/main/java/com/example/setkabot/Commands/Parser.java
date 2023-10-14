@@ -1,6 +1,6 @@
-package com.example.setkabot.service.command;
+package com.example.setkabot.Commands;
 
-import javafx.util.*;
+import javafx.util.Pair;
 
 public class Parser {
     private final String PREFIX_FOR_COMMAND = "/";
@@ -14,18 +14,18 @@ public class Parser {
     public ParsedCommand getParsedCommand(String text) {
         String trimText = "";
         if (text != null) trimText = text.trim();
-        ParsedCommand result = new ParsedCommand(Command.NONE, trimText);
+        ParsedCommand result = new ParsedCommand(Commands.NONE, trimText);
 
         if ("".equals(trimText)) return result;
         Pair<String, String> commandAndText = getDelimitedCommandFromText(trimText);
         if (isCommand(commandAndText.getKey())) {
             if (isCommandForMe(commandAndText.getKey())) {
                 String commandForParse = cutCommandFromFullText(commandAndText.getKey());
-                Command commandFromText = getCommandFromText(commandForParse);
+                Commands commandFromText = getCommandFromText(commandForParse);
                 result.setText(commandAndText.getValue());
                 result.setCommand(commandFromText);
             } else {
-                result.setCommand(Command.NOTFORME);
+                result.setCommand(Commands.NOTFORME);
                 result.setText(commandAndText.getValue());
             }
 
@@ -33,18 +33,19 @@ public class Parser {
         return result;
     }
 
-
     private String cutCommandFromFullText(String text) {
-        return text.contains(DELIMITER_COMMAND_BOTNAME) ? text.substring(1, text.indexOf(DELIMITER_COMMAND_BOTNAME)) : text.substring(1);
+        return text.contains(DELIMITER_COMMAND_BOTNAME) ?
+                text.substring(1, text.indexOf(DELIMITER_COMMAND_BOTNAME)) :
+                text.substring(1);
     }
 
-    private Command getCommandFromText(String text) {
+    private Commands getCommandFromText(String text) {
         String upperCaseText = text.toUpperCase().trim();
-        Command command = Command.NONE;
+        Commands command = Commands.NONE;
         try {
-            command = Command.valueOf(upperCaseText);
+            command = Commands.valueOf(upperCaseText);
         } catch (IllegalArgumentException e) {
-            //log.debug("Can't parse command: " + text);
+
         }
         return command;
     }
