@@ -1,0 +1,9 @@
+//        //сообщения
+//        if (update.hasMessage() && update.getMessage().hasText()){
+//            MessageExecuter messageExecuter = new MessageExecuter(update);
+//            messageExecuter.Execute();
+//        }
+//        //команды
+//        else if (update.hasCallbackQuery()){
+//            CallbackExecuter callbackExecuter = new CallbackExecuter(update);
+//        }
