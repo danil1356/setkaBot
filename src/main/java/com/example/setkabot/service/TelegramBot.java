@@ -1,5 +1,6 @@
 package com.example.setkabot.service;
 
+import com.example.setkabot.Commands.Parser;
 import com.example.setkabot.config.BotConfig;
 import com.example.setkabot.data.Entity.Payments;
 import com.example.setkabot.data.Entity.Users;
@@ -75,6 +76,12 @@ public class TelegramBot extends TelegramLongPollingBot {
     @SneakyThrows
     @Override
     public void onUpdateReceived(Update update) {
+        // TODO: 04.12.2023  рабочий прототип парсера
+//        execute(SendMessage.builder()
+//                .text(new Parser(botConfig.getBotName()).getParsedCommand(update.getMessage().getText()).getCommand().toString())
+//                .chatId(update.getMessage().getChatId())
+//                .build());
+
         //рассылка
         if (update.hasMessage() && admins.contains(update.getMessage().getFrom().getId())
                 && SELECTED.containsKey(String.valueOf(update.getMessage().getFrom().getId()))

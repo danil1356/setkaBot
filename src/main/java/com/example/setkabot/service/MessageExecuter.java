@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 
-public class MessageExecuter {
+public class  MessageExecuter {
     Update update;
     String messageText;
     long chatId;

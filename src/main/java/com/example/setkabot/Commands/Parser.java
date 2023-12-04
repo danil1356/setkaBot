@@ -19,6 +19,7 @@ public class Parser {
         if ("".equals(trimText)) return result;
         Pair<String, String> commandAndText = getDelimitedCommandFromText(trimText);
         if (isCommand(commandAndText.getKey())) {
+            // TODO: 04.12.2023 возможно тут value?
             if (isCommandForMe(commandAndText.getKey())) {
                 String commandForParse = cutCommandFromFullText(commandAndText.getKey());
                 Commands commandFromText = getCommandFromText(commandForParse);
