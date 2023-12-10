@@ -8,6 +8,7 @@ import com.example.setkabot.dataService.Impl.PaymentsServiceImpl;
 import com.example.setkabot.dataService.Impl.UsersServiceImpl;
 import com.example.setkabot.dataService.PaymentsService;
 import com.example.setkabot.dataService.UsersService;
+import lombok.Data;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,7 +18,10 @@ import org.telegram.telegrambots.meta.api.methods.CopyMessage;
 import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
 import org.telegram.telegrambots.meta.api.methods.invoices.CreateInvoiceLink;
+import org.telegram.telegrambots.meta.api.methods.send.SendContact;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
+import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
@@ -30,13 +34,16 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.io.File;
 import java.util.*;
 import java.util.List;
 
 @Component
 public class TelegramBot extends TelegramLongPollingBot {
     BotConfig botConfig;
-
+    String memePath = "src/main/resources/memes";
+    File folder = new File(memePath);
+    File[] listOfFiles = folder.listFiles();
     static final String sendType1 = "/всем";
     static final String sendType2 = "/подписка";
 
@@ -192,15 +199,18 @@ public class TelegramBot extends TelegramLongPollingBot {
                     List<InlineKeyboardButton> rowLine = new ArrayList<>();
                     List<InlineKeyboardButton> rowLine1 = new ArrayList<>();
                     List<InlineKeyboardButton> rowLine2 = new ArrayList<>();
+                    List<InlineKeyboardButton> rowLine3 = new ArrayList<>();
 
                     // TODO: 23.10.2023 сделайть патдэржат каланал
                     rowLine.add(createButton("payments", "Поддержать канал!"));
                     rowLine1.add(createButton("bookClub","Вступить в книжный клуб"));
                     rowLine2.add(createButton("staffaj", "Отменный стаффаж для подач"));
+                    rowLine3.add(createButton("rndMEMEStart", "le meme"));
 
                     rowsLine.add(rowLine);
                     rowsLine.add(rowLine1);
                     rowsLine.add(rowLine2);
+                    rowsLine.add(rowLine3);
                     markup.setKeyboard(rowsLine);
 
                     SendMessage sendMessage = new SendMessage(String.valueOf(chatId), "Привет! \uD83E\uDDE1\n" +
@@ -380,12 +390,41 @@ public class TelegramBot extends TelegramLongPollingBot {
                                 execute(copyMessage);
                                 Thread.sleep(90);
                             }
-
                         }
                     }
                 });
                 thread.start();
                 SELECTED.put(UID,null);
+            }
+
+            /**
+             * Блок для мемев
+             */
+            if (callbackData.contains("rndMEMEStart")){
+                var button1 = createButton("sendContact","Предложить мем");
+                var button2 = createButton("rndMEME","Еще!");
+
+                execute(SendPhoto.builder()
+                        .chatId(chatId)
+                        .photo(new InputFile(new File(memePath+"/"+listOfFiles[(int)(Math.random() * (listOfFiles.length))].getName())))
+                        .replyMarkup(new InlineKeyboardMarkup(Arrays.asList(Arrays.asList(button1,button2))))
+                        .build());
+            }
+            if (callbackData.equals("sendContact")){
+                execute(SendMessage.builder()
+                        .text("@realurban_help")
+                        .chatId(chatId)
+                        .build()
+                );
+            }
+            if (callbackData.equals("rndMEME")){
+                var button = createButton("rndMEME","Еще!");
+
+                execute(SendPhoto.builder()
+                        .chatId(chatId)
+                        .photo(new InputFile(new File(memePath+"/"+listOfFiles[(int)(Math.random() * (listOfFiles.length))].getName())))
+                        .replyMarkup(new InlineKeyboardMarkup(Arrays.asList(Arrays.asList(button))))
+                        .build());
             }
         }
 
