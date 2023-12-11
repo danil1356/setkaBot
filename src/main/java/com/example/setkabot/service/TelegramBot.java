@@ -36,6 +36,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.io.File;
 import java.io.InputStream;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.List;
 import java.util.jar.*;
@@ -43,12 +44,11 @@ import java.util.jar.*;
 @Component
 public class TelegramBot extends TelegramLongPollingBot {
     BotConfig botConfig;
-    String memePath = "src/main/resources/memes";  //"src/main/resources/memes";//"src/main/resources/memes"; TelegramBot.class.getResource("memes").getPath();
+    String memePath = "/root/memes";
     File folder = new File(memePath);
     File[] listOfFiles = folder.listFiles();
     static final String sendType1 = "/всем";
     static final String sendType2 = "/подписка";
-
     static HashMap<String, String> SELECTED = new HashMap();
     static HashMap<String, Update> UPDATES = new HashMap();
     private final PaymentsService paymentsService;
@@ -85,17 +85,6 @@ public class TelegramBot extends TelegramLongPollingBot {
     @SneakyThrows
     @Override
     public void onUpdateReceived(Update update) {
-
-        try(JarFile jar = new JarFile(new File(getClass().getProtectionDomain()
-                .getCodeSource()
-                .getLocation()
-                .getPath()))) {
-            jar.stream()
-                    .map(JarEntry::getName)
-                    .filter(i -> i.startsWith("memes/"))
-                    .forEach(System.out::println);
-        }
-
         // TODO: 04.12.2023  рабочий прототип парсера
 //        execute(SendMessage.builder()
 //                .text(new Parser(botConfig.getBotName()).getParsedCommand(update.getMessage().getText()).getCommand().toString())
