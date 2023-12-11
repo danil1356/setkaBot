@@ -35,13 +35,15 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.*;
 import java.util.List;
+import java.util.jar.*;
 
 @Component
 public class TelegramBot extends TelegramLongPollingBot {
     BotConfig botConfig;
-    String memePath = "src/main/resources/memes";
+    String memePath = "src/main/resources/memes";  //"src/main/resources/memes";//"src/main/resources/memes"; TelegramBot.class.getResource("memes").getPath();
     File folder = new File(memePath);
     File[] listOfFiles = folder.listFiles();
     static final String sendType1 = "/всем";
@@ -83,6 +85,17 @@ public class TelegramBot extends TelegramLongPollingBot {
     @SneakyThrows
     @Override
     public void onUpdateReceived(Update update) {
+
+        try(JarFile jar = new JarFile(new File(getClass().getProtectionDomain()
+                .getCodeSource()
+                .getLocation()
+                .getPath()))) {
+            jar.stream()
+                    .map(JarEntry::getName)
+                    .filter(i -> i.startsWith("memes/"))
+                    .forEach(System.out::println);
+        }
+
         // TODO: 04.12.2023  рабочий прототип парсера
 //        execute(SendMessage.builder()
 //                .text(new Parser(botConfig.getBotName()).getParsedCommand(update.getMessage().getText()).getCommand().toString())
