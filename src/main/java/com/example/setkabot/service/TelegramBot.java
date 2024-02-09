@@ -296,9 +296,9 @@ public class TelegramBot extends TelegramLongPollingBot {
                 a.add(new LabeledPrice("Цена", 10000));
 
                 // TODO: 05.11.2023
-                //381764678:TEST:68927 setka/381764678:TEST:68935 test_bot
+                //
                 CreateInvoiceLink link = new CreateInvoiceLink("СЕТКА подписка на месяц", "Это доступ к закрытому авторскому контенту от СЕТКИ", "1",
-                        "390540012:LIVE:41202", "RUB", a );
+                        "----", "RUB", a );
                 link.setNeedEmail(true);
 
                 String s = execute(link);
